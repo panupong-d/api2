@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Fetch Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        #data {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            white-space: pre-wrap; /* แสดงข้อมูล JSON ที่มีการจัดรูปแบบ */
+        }
+
+        .loading {
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ดึงข้อมูลจาก API</h1>
+    <button onclick="fetchData()">ดึงข้อมูล</button>
+
+    <div id="data" class="loading">กดปุ่มเพื่อดึงข้อมูล...</div>
+
+    <script>
+        async function fetchData() {
+            const dataDiv = document.getElementById('data');
+            dataDiv.textContent = 'กำลังโหลดข้อมูล...';
+
+            try {
+                // เรียก API ที่คุณต้องการ
+                const response = await fetch('https://charoenkrung103-09a5dba3deba.herokuapp.com/data103/id_all');
+
+                // ตรวจสอบสถานะการตอบสนอง
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // แปลงข้อมูลเป็น JSON
+                const data = await response.json();
+
+                // แสดงข้อมูลที่ได้รับ
+                console.log('Fetched data:', data); // เพิ่มการแสดงข้อมูลใน console
+
+                // แสดงข้อมูล JSON ตรง ๆ
+                dataDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                dataDiv.textContent = 'เกิดข้อผิดพลาดในการดึงข้อมูล';
+                console.error('Error fetching data:', error);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

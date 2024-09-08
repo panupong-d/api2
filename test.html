@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoogleDrive LinkConverter By.น้องบิ๊ก</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+        }
+        .copy-btn {
+            display: inline-block;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>GoogleDrive LinkConverter By.น้องบิ๊ก</h1>
+    <form id="linkForm">
+        <label for="inputLink">วางลิ้งเลยเตง :</label>
+        <input type="text" id="inputLink" placeholder="https://drive.google.com/file/d/..." size="60" required>
+        <button type="button" onclick="convertLink()">Convert</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        function convertLink() {
+            const inputLink = document.getElementById('inputLink').value;
+            const resultDiv = document.getElementById('result');
+            
+            // Regular expression to match and extract the file ID
+            const regex = /https:\/\/drive\.google\.com\/file\/d\/([^\/]+)\/view\?usp=drive_link/;
+            const match = inputLink.match(regex);
+            
+            if (match) {
+                const fileId = match[1];
+                const newLink = `https://lh3.googleusercontent.com/d/${fileId}`;
+                resultDiv.innerHTML = `
+                    <p>Converted Link: <a href="${newLink}" target="_blank">${newLink}</a></p>
+                    <img src="${newLink}" alt="Google Drive Image">
+                    <button class="copy-btn" onclick="copyToClipboard('${newLink}')">Copy Link</button>
+                `;
+            } else {
+                resultDiv.innerHTML = `<p>Invalid Google Drive link format.</p>`;
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!');
+            }, (err) => {
+                alert('Failed to copy link: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
